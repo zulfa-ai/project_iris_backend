@@ -1,0 +1,20 @@
+{
+  "topic": "ransomware",
+  "stages": [
+    {
+      "stage": "prepare",
+      "time_limit_sec": 30,
+      "questions": [
+        {
+          "id": "prep-1",
+          "question": "Do you have offline or immutable backups that are regularly tested?",
+          "options": [
+            {"text": "Yes", "score": 10},
+            {"text": "Maybe / not tested", "score": -5},
+            {"text": "No", "score": -10}
+          ]
+        }
+      ]
+    }
+  ]
+}
