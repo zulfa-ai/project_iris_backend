@@ -1,0 +1,18 @@
+{
+  "stages": [
+    {
+      "stage": "prepare",
+      "time_limit_sec": 30,
+      "questions": [
+        {
+          "id": "prep-1",
+          "text": "Do you have backups?",
+          "options": [
+            { "text": "Yes", "score": 10 },
+            { "text": "No", "score": -10 }
+          ]
+        }
+      ]
+    }
+  ]
+}

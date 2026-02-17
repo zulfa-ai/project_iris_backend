@@ -1,15 +1,14 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .auth_views import login_view, refresh_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
 
-    # JWT auth endpoints
-    path("api/auth/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    # Cookie-based auth
+    path("api/auth/login/", login_view),
+    path("api/auth/refresh/", refresh_view),
 
-    # App APIs
     path("api/gameplay/", include("gameplay.urls")),
-    path("api/scenarios/", include("scenarios.urls")),  # clearer separation
+    path("api/", include("scenarios.urls")),
 ]

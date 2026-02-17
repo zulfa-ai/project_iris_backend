@@ -21,6 +21,9 @@ class GameSession(models.Model):
     # If you want to keep this simple for now, keep "topic".
     topic = models.CharField(max_length=50)
 
+    current_stage_index = models.PositiveIntegerField(default=0)
+    current_question_index = models.PositiveIntegerField(default=0)
+
     started_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField(null=True, blank=True)
 
