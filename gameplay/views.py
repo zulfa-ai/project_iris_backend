@@ -19,16 +19,21 @@ from .serializers import (
     GenerateStageSerializer,
 )
 
+# Old AI engine imports (kept for your existing AI endpoints)
 from .services import start_ai_session, generate_ai_stage, generate_ai_debrief
 
-from rest_framework.decorators import api_view
-from gameplay.services import start_static_session
+# New hybrid AI starter
+from .services_new import start_hybrid_ai_session
 
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def session_start(request):
-
+    """
+    Starts a HYBRID AI session:
+    - AI generates scenario narrative
+    - DB playbook provides validated questions
+    """
     difficulty = request.data.get("difficulty")
     topic = request.data.get("topic") or request.data.get("playbook")
     questions_per_stage = int(request.data.get("questions_per_stage", 2))
@@ -40,28 +45,22 @@ def session_start(request):
         )
 
     try:
-        session = start_static_session(
+        result = start_hybrid_ai_session(
             user=request.user,
             difficulty=difficulty,
             topic=topic,
             questions_per_stage=questions_per_stage,
         )
 
-        return Response(
-            {
-                "session_id": session.id,
-                "status": session.status,
-                "difficulty": session.difficulty,
-                "topic": session.topic,
-            },
-            status=status.HTTP_201_CREATED,
-        )
+        return Response(result, status=status.HTTP_201_CREATED)
 
     except Exception as e:
         return Response(
             {"detail": str(e)},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+
 # -----------------------------
 # Scenario helpers (STATIC JSON)
 # -----------------------------
@@ -166,10 +165,10 @@ def start_or_resume(request):
     }
     return Response(payload, status=status.HTTP_200_OK)
 
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def current_state(request, session_id: int):
-
     session = GameSession.objects.filter(id=session_id, user=request.user).first()
     if not session:
         return Response({"detail": "session not found"}, status=404)
@@ -180,7 +179,6 @@ def current_state(request, session_id: int):
             "next": None
         })
 
-    # Get active stage
     stage_run = session.stages.filter(status="active").order_by("order").first()
 
     if not stage_run:
@@ -189,7 +187,6 @@ def current_state(request, session_id: int):
             "next": None
         })
 
-    # Get next pending question
     qrun = stage_run.questions.filter(status="pending").order_by("order").first()
 
     if not qrun:
@@ -215,7 +212,6 @@ def current_state(request, session_id: int):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def submit_answer(request, session_id: int):
-
     question_id = request.data.get("question_id")
     selected_choice_id = request.data.get("selected_choice_id")
 
@@ -232,7 +228,6 @@ def submit_answer(request, session_id: int):
     if session.status != "in_progress":
         return Response({"detail": f"session is {session.status}"}, status=400)
 
-    # Get question run
     qrun = QuestionRun.objects.select_related("stage_run").filter(
         stage_run__session=session,
         question_key=question_id,
@@ -242,7 +237,6 @@ def submit_answer(request, session_id: int):
     if not qrun:
         return Response({"detail": "question not found or already answered"}, status=404)
 
-    # Find selected option
     score_delta = None
     selected_text = ""
 
@@ -258,16 +252,13 @@ def submit_answer(request, session_id: int):
     is_correct = score_delta > 0
 
     with transaction.atomic():
-
         session = GameSession.objects.select_for_update().get(id=session.id)
         qrun = QuestionRun.objects.select_for_update().get(id=qrun.id)
         stage_run = qrun.stage_run
 
-        # Mark question answered
         qrun.status = "answered"
         qrun.save(update_fields=["status"])
 
-        # Create answer record
         ans = Answer.objects.create(
             session=session,
             question_run=qrun,
@@ -277,14 +268,12 @@ def submit_answer(request, session_id: int):
             is_correct=is_correct,
         )
 
-        # Update scores
         session.total_score += score_delta
         stage_run.stage_score += score_delta
 
         if not is_correct:
             session.wrong_count += 1
 
-        # Advance stage if no pending questions left
         if not stage_run.questions.filter(status="pending").exists():
             stage_run.status = "done"
             stage_run.save(update_fields=["status"])
@@ -304,7 +293,6 @@ def submit_answer(request, session_id: int):
                 session.ended_reason = "finished"
                 session.ended_at = timezone.now()
 
-        # Fail condition
         if session.wrong_count >= session.wrong_limit:
             session.status = "failed"
             session.ended_reason = "too_many_wrongs"
@@ -344,8 +332,9 @@ def history(request):
     qs = GameSession.objects.filter(user=request.user).order_by("-started_at")[:50]
     return Response({"sessions": GameSessionSerializer(qs, many=True).data})
 
+
 # -----------------------------
-# Endpoints (AI Engine)
+# Endpoints (OLD AI Engine)
 # -----------------------------
 class AISessionStartView(APIView):
     """
@@ -361,7 +350,6 @@ class AISessionStartView(APIView):
         difficulty = serializer.validated_data["difficulty"]
         incident_type = serializer.validated_data["incident_type"]
 
-        # start_ai_session expects topic (your DB field), so map incident_type -> topic
         session, scenario_snapshot = start_ai_session(
             user=request.user,
             topic=incident_type,
@@ -377,7 +365,6 @@ class AISessionStartView(APIView):
             },
             status=201,
         )
-
 
 
 class AIStageGenerateView(APIView):
@@ -428,6 +415,7 @@ class AIDebriefGenerateView(APIView):
             status=200,
         )
 
+
 class AICurrentQuestionView(APIView):
     """
     GET /api/gameplay/ai/session/<session_id>/current
@@ -438,26 +426,18 @@ class AICurrentQuestionView(APIView):
     def get(self, request, session_id: int):
         session = get_object_or_404(GameSession, id=session_id, user=request.user)
 
-        # Earliest active stage
         stage_run = session.stages.filter(status="active").order_by("order").first()
         if not stage_run:
             return Response({"session_id": session.id, "next": None}, status=200)
 
-        # Next pending question
         qrun = stage_run.questions.filter(status="pending").order_by("order").first()
         if not qrun:
             return Response({"session_id": session.id, "next": None}, status=200)
 
         base_time = qrun.time_limit_seconds or 30
-
-        # Dynamic timer reduction based on pressure
-        adjusted_time = max(
-            8,
-            base_time - (session.pressure_level // 20)
-        )
+        adjusted_time = max(8, base_time - (session.pressure_level // 20))
 
         escalation_level = None
-
         if session.pressure_level >= 85:
             escalation_level = "critical"
         elif session.pressure_level >= 60:
@@ -480,35 +460,6 @@ class AICurrentQuestionView(APIView):
             },
             status=200,
         )
-
-
-        # Base time comes from QuestionRun (already stored)
-        base_time = qrun.time_limit_seconds or 30
-
-        # Dynamic reduction based on pressure
-        adjusted_time = max(
-            8,  # never allow below 8 seconds
-            base_time - (session.pressure_level // 20)
-        )
-
-        return Response(
-            {
-                "session_id": session.id,
-                "stage": stage_run.stage,
-                "time_limit_sec": adjusted_time,
-                "pressure_level": session.pressure_level,
-                "question": {
-                    "id": qrun.question_key,
-                    "text": qrun.prompt,
-                    "options": qrun.choices,
-                },
-            },
-            status=200,
-        )
-
-
-
-
 
 
 class AIAnswerSubmitView(APIView):
@@ -541,12 +492,11 @@ class AIAnswerSubmitView(APIView):
         if hasattr(qrun, "answer"):
             return Response({"detail": "already answered"}, status=409)
 
-        # Score lookup from stored snapshot choices
         score_delta = None
         selected_text = ""
         for opt in (qrun.choices or []):
             if str(opt.get("id")) == str(selected_choice_id):
-                score_delta = int(opt.get("score", 0))
+                score_delta = int(opt.get("delta_score", 0))
                 selected_text = opt.get("text", "")
                 break
 
@@ -556,16 +506,13 @@ class AIAnswerSubmitView(APIView):
         is_correct = score_delta > 0
 
         with transaction.atomic():
-            # lock rows
             session = GameSession.objects.select_for_update().get(id=session.id)
             qrun = QuestionRun.objects.select_for_update().select_related("stage_run").get(id=qrun.id)
             stage_run = qrun.stage_run
 
-            # Mark question answered
             qrun.status = "answered"
             qrun.save(update_fields=["status"])
 
-            # Create answer record
             ans = Answer.objects.create(
                 session=session,
                 question_run=qrun,
@@ -575,16 +522,12 @@ class AIAnswerSubmitView(APIView):
                 is_correct=is_correct,
             )
 
-            # Update scores
             session.total_score += score_delta
             stage_run.stage_score += score_delta
 
             if not is_correct:
                 session.wrong_count += 1
 
-            # ----------------------
-            # Pressure update logic
-            # ----------------------
             if score_delta > 0:
                 session.pressure_level = max(0, session.pressure_level - 5)
             elif score_delta == -5:
@@ -592,51 +535,28 @@ class AIAnswerSubmitView(APIView):
             elif score_delta <= -10:
                 session.pressure_level += 20
 
+            if session.pressure_level > 50:
+                if score_delta == -5:
+                    session.total_score -= 3
+                elif score_delta <= -10:
+                    session.total_score -= 5
 
-        # WAR MODE: harsher penalties under pressure
-        if session.pressure_level > 50:
-            if score_delta == -5:
-                score_delta = -8
-            elif score_delta <= -10:
-                score_delta = -15
-
-            # clamp 0–100
             session.pressure_level = min(session.pressure_level, 100)
 
-            # Fail by pressure
             if session.pressure_level >= 100:
                 session.status = "failed"
                 session.ended_reason = "system_escalation"
                 session.ended_at = timezone.now()
-
-            # Fail by wrong answers
             elif session.wrong_count >= session.wrong_limit:
                 session.status = "failed"
                 session.ended_reason = "too_many_wrongs"
                 session.ended_at = timezone.now()
 
-            # save stage + session
-            stage_run.save(update_fields=["stage_score"])
-            session.save(update_fields=[
-                "total_score",
-                "wrong_count",
-                "pressure_level",
-                "status",
-                "ended_reason",
-                "ended_at",
-            ])
-
-            # ----------------------
-            # Auto-progression
-            # ----------------------
             if session.status != "failed":
-
-                # If no pending questions remain in this stage
                 if not stage_run.questions.filter(status="pending").exists():
                     stage_run.status = "done"
                     stage_run.save(update_fields=["status"])
 
-                    # Activate next locked stage
                     next_stage = (
                         session.stages
                         .filter(status="locked")
@@ -648,29 +568,18 @@ class AIAnswerSubmitView(APIView):
                         next_stage.status = "active"
                         next_stage.save(update_fields=["status"])
                     else:
-                        # No more stages → complete session
                         session.status = "completed"
                         session.ended_reason = "finished"
                         session.ended_at = timezone.now()
-                        session.save(update_fields=["status", "ended_reason", "ended_at"])
 
-           
-
-            # If failed, stop here
-            if session.status == "failed":
-                return Response(
-                    {
-                        "answer": AnswerSerializer(ans).data,
-                        "session": GameSessionSerializer(session).data,
-                        "next": None,
-                    },
-                    status=201,
-                )
+            stage_run.save(update_fields=["stage_score"])
+            session.save()
 
         return Response(
             {
                 "answer": AnswerSerializer(ans).data,
                 "session": GameSessionSerializer(session).data,
+                "next": None if session.status == "failed" else None,
             },
             status=201,
         )
