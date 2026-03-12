@@ -1,6 +1,8 @@
 from dataclasses import asdict
-from typing import Dict, List, Optional
+from typing import Dict, List
+import json
 import random
+import requests
 
 from django.db import transaction
 from django.utils import timezone
@@ -16,10 +18,6 @@ from .models import (
 from .exceptions import Conflict, GameplayError
 from .providers import BaseScenarioProvider
 
-
-# =========================================================
-# CONSTANTS
-# =========================================================
 
 PHASES_IN_ORDER = [
     "Prepare",
@@ -38,15 +36,7 @@ STAGE_SLUG_MAP = {
 }
 
 
-# =========================================================
-# BASIC SESSION SERVICES
-# =========================================================
-
 class SessionService:
-    """
-    Handles loading / resuming non-AI provider-based sessions.
-    """
-
     def __init__(self, provider: BaseScenarioProvider):
         self.provider = provider
 
@@ -101,25 +91,16 @@ class SessionService:
         }
 
 
-# =========================================================
-# ANSWER SUBMISSION SERVICES
-# =========================================================
-
 class AnswerService:
-    """
-    Handles answer submission for provider-based sessions.
-    """
-
     def __init__(self, provider: BaseScenarioProvider):
         self.provider = provider
 
     @transaction.atomic
     def submit_answer(self, session: GameSession, question_id: str, selected_text: str) -> dict:
-        # Lock session row
         session = GameSession.objects.select_for_update().get(id=session.id)
 
         if session.status != "in_progress":
-            raise GameplayError(f"session is {session.status}, cannot answer")
+            raise GameplayError(f"Session is {session.status}")
 
         scn = self.provider.load(session.topic)
         current = self.provider.get_current_question(
@@ -133,37 +114,32 @@ class AnswerService:
             session.ended_at = timezone.now()
             session.ended_reason = "finished"
             session.save(update_fields=["status", "ended_at", "ended_reason"])
-            return {"detail": "No more questions. Session completed."}
+            return {"detail": "Session completed"}
 
         q = current.question
-
-        # Supports either "id" or "external_id"
         current_question_id = q.get("id") or q.get("external_id")
+
         if current_question_id != question_id:
-            raise GameplayError("question_id does not match current question")
+            raise GameplayError("question_id mismatch")
 
         if Answer.objects.filter(session=session, question_id=question_id).exists():
-            raise Conflict("already answered")
+            raise Conflict("Question already answered")
 
         score_delta = None
         for opt in q.get("options", []):
             if opt.get("text") == selected_text:
-                # Supports both "delta_score" and "score"
-                score_delta = int(opt.get("delta_score", opt.get("score", 0)))
+                score_delta = int(opt.get("delta_score", 0))
                 break
 
         if score_delta is None:
-            raise GameplayError("selected_text not found in options")
+            raise GameplayError("Selected option not found")
 
-        # Update score / wrong count
-        is_wrong = score_delta < 0
-        if is_wrong:
+        if score_delta < 0:
             session.wrong_count += 1
 
         session.total_score += score_delta
         session.current_question_index += 1
 
-        # Move to next stage if current stage questions are exhausted
         stages = scn.get("stages", [])
         if session.current_stage_index < len(stages):
             stage_questions = stages[session.current_stage_index].get("questions", [])
@@ -171,11 +147,10 @@ class AnswerService:
                 session.current_stage_index += 1
                 session.current_question_index = 0
 
-        # Fail condition
         if session.wrong_count >= session.wrong_limit:
             session.status = "failed"
-            session.ended_at = timezone.now()
             session.ended_reason = "too_many_wrongs"
+            session.ended_at = timezone.now()
 
         session.save()
 
@@ -194,32 +169,23 @@ class AnswerService:
             session.current_question_index,
         )
 
-        # Finish condition
         if session.status == "in_progress" and next_current is None:
             session.status = "completed"
-            session.ended_at = timezone.now()
             session.ended_reason = "finished"
-            session.save(update_fields=["status", "ended_at", "ended_reason"])
+            session.ended_at = timezone.now()
+            session.save(update_fields=["status", "ended_reason", "ended_at"])
 
         return {
             "session_id": session.id,
             "status": session.status,
-            "ended_reason": session.ended_reason,
             "total_score": session.total_score,
             "wrong_count": session.wrong_count,
-            "next": asdict(next_current) if next_current else None,
             "awarded_points": score_delta,
+            "next": asdict(next_current) if next_current else None,
         }
 
 
-# =========================================================
-# PLAYBOOK HELPERS
-# =========================================================
-
 def pick_playbook(*, difficulty: str, playbook_slug: str, version: int = 1) -> Playbook:
-    """
-    Returns a playbook by slug + difficulty + version.
-    """
     return Playbook.objects.get(
         slug=playbook_slug,
         difficulty=difficulty,
@@ -228,22 +194,14 @@ def pick_playbook(*, difficulty: str, playbook_slug: str, version: int = 1) -> P
 
 
 def get_questions_for_phase(playbook: Playbook, phase: str) -> List[Question]:
-    """
-    Returns all active questions for a playbook phase.
-    """
     return list(
-        Question.objects.filter(
-            playbook=playbook,
-            phase=phase,
-            is_active=True,
-        ).prefetch_related("options")
+        Question.objects
+        .filter(playbook=playbook, phase=phase, is_active=True)
+        .prefetch_related("options")
     )
 
 
-def snapshot_questions_to_stage(stage_run: StageRun, questions: List[Question]) -> None:
-    """
-    Copies Question rows into QuestionRun rows for the session snapshot.
-    """
+def snapshot_questions_to_stage(stage_run: StageRun, questions: List[Question]):
     for q_order, q in enumerate(questions):
         QuestionRun.objects.create(
             stage_run=stage_run,
@@ -263,11 +221,7 @@ def snapshot_questions_to_stage(stage_run: StageRun, questions: List[Question]) 
 
 
 def build_stage_runs(session: GameSession) -> Dict[str, StageRun]:
-    """
-    Creates StageRun rows for all phases.
-    First stage is active, the rest are locked.
-    """
-    stage_runs: Dict[str, StageRun] = {}
+    stage_runs = {}
 
     for order, phase in enumerate(PHASES_IN_ORDER):
         stage_runs[phase] = StageRun.objects.create(
@@ -281,18 +235,162 @@ def build_stage_runs(session: GameSession) -> Dict[str, StageRun]:
     return stage_runs
 
 
-# =========================================================
-# STATIC SESSION BUILDER
-# =========================================================
+def generate_ai_scenario(topic: str, difficulty: str) -> dict:
+    prompt = f"""
+Generate a cyber incident training scenario.
+
+Incident type: {topic}
+Difficulty: {difficulty}
+
+Return ONLY valid JSON.
+
+Format:
+{{
+  "scenario_title": "",
+  "scenario_brief": "",
+  "injects": [
+    {{"phase":"Detect","text":""}},
+    {{"phase":"Analyse","text":""}},
+    {{"phase":"Remediation","text":""}}
+  ]
+}}
+""".strip()
+
+    try:
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "llama3:latest",
+                "prompt": prompt,
+                "stream": False,
+            },
+            timeout=60,
+        )
+        response.raise_for_status()
+
+        data = response.json()
+        raw = data.get("response", "").strip()
+
+        if raw.startswith("```json"):
+            raw = raw[len("```json"):].strip()
+        if raw.startswith("```"):
+            raw = raw[len("```"):].strip()
+        if raw.endswith("```"):
+            raw = raw[:-3].strip()
+
+        return json.loads(raw)
+
+    except Exception as e:
+        print(f"[AI scenario fallback triggered] {e}")
+        return {
+            "scenario_title": f"{topic.title()} Incident",
+            "scenario_brief": f"A {difficulty} level {topic} incident has been detected.",
+            "injects": [
+                {"phase": "Detect", "text": "Initial suspicious activity reported."},
+                {"phase": "Analyse", "text": "Security team begins investigation."},
+                {"phase": "Remediation", "text": "Containment actions initiated."},
+            ],
+        }
+
+
+def generate_ai_inject(topic: str, severity: str):
+    prompt = f"""
+Generate a short cyber incident update.
+
+Topic: {topic}
+Severity: {severity}
+
+Return ONLY valid JSON.
+
+Format:
+{{ "inject": "" }}
+""".strip()
+
+    try:
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "llama3:latest",
+                "prompt": prompt,
+                "stream": False,
+            },
+            timeout=60,
+        )
+        response.raise_for_status()
+
+        data = response.json()
+        raw = data.get("response", "").strip()
+
+        if raw.startswith("```json"):
+            raw = raw[len("```json"):].strip()
+        if raw.startswith("```"):
+            raw = raw[len("```"):].strip()
+        if raw.endswith("```"):
+            raw = raw[:-3].strip()
+
+        parsed = json.loads(raw)
+        return parsed.get("inject")
+
+    except Exception as e:
+        print(f"[AI inject fallback triggered] {e}")
+        return None
+
+
+def generate_ai_crisis_event(topic: str, severity: str):
+    prompt = f"""
+You are generating a sudden cyber crisis escalation event.
+
+Incident type: {topic}
+Severity: {severity}
+
+Return ONLY valid JSON.
+Do not include markdown fences.
+Do not include explanations.
+
+Format:
+{{
+  "crisis_event": "short unexpected escalation message"
+}}
+
+Rules:
+- Keep it realistic
+- Make it feel urgent
+- Keep it under 25 words
+- The event must match the incident type
+""".strip()
+
+    try:
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "llama3:latest",
+                "prompt": prompt,
+                "stream": False,
+            },
+            timeout=60,
+        )
+        response.raise_for_status()
+
+        data = response.json()
+        raw = data.get("response", "").strip()
+
+        if raw.startswith("```json"):
+            raw = raw[len("```json"):].strip()
+        if raw.startswith("```"):
+            raw = raw[len("```"):].strip()
+        if raw.endswith("```"):
+            raw = raw[:-3].strip()
+
+        parsed = json.loads(raw)
+        return parsed.get("crisis_event")
+
+    except Exception as e:
+        print(f"[AI crisis fallback triggered] {e}")
+        return None
+
 
 @transaction.atomic
-def start_static_session(user, difficulty: str, topic: str, questions_per_stage: int = 2) -> GameSession:
-    """
-    Starts a normal static session:
-    - creates GameSession
-    - creates StageRuns
-    - snapshots DB questions into QuestionRuns
-    """
+def start_hybrid_ai_session(user, difficulty: str, topic: str, questions_per_stage: int = 2) -> dict:
     session = GameSession.objects.create(
         user=user,
         topic=topic,
@@ -300,11 +398,17 @@ def start_static_session(user, difficulty: str, topic: str, questions_per_stage:
         status="in_progress",
         total_score=0,
         wrong_count=0,
+        pressure_level=0,
     )
 
     playbook = pick_playbook(
         difficulty=difficulty,
         playbook_slug=topic,
+    )
+
+    ai_scenario = generate_ai_scenario(
+        topic=topic,
+        difficulty=difficulty,
     )
 
     stage_runs = build_stage_runs(session)
@@ -313,156 +417,6 @@ def start_static_session(user, difficulty: str, topic: str, questions_per_stage:
         questions = get_questions_for_phase(playbook, phase)
         random.shuffle(questions)
         selected = questions[:questions_per_stage]
-        snapshot_questions_to_stage(stage_run, selected)
-
-    return session
-
-
-# =========================================================
-# AI / HYBRID SESSION HELPERS
-# =========================================================
-
-def generate_mock_ai_scenario(topic: str, difficulty: str) -> dict:
-    """
-    Dynamic AI-style scenario generator.
-    Randomises attack storylines and injects.
-    """
-
-    phishing_templates = [
-        {
-            "title": "CEO Impersonation Phishing Attack",
-            "brief": "Employees receive an urgent email appearing to come from the CEO requesting immediate verification of company credentials through a login portal.",
-            "detect": "Multiple employees report a suspicious email claiming to be from the CEO requesting urgent login verification.",
-            "analyse": "Security logs reveal several users clicked the phishing link and attempted to log in.",
-            "remediate": "A compromised account begins sending phishing emails internally."
-        },
-        {
-            "title": "Fake Microsoft 365 Login Page",
-            "brief": "Employees receive a notification asking them to re-authenticate their Microsoft 365 account through a provided link.",
-            "detect": "Users report being redirected to a Microsoft login page after clicking an email link.",
-            "analyse": "SOC analysts discover the login page is hosted on a suspicious external domain.",
-            "remediate": "One employee account is used to access internal SharePoint files."
-        },
-        {
-            "title": "Payroll Information Phishing",
-            "brief": "HR staff receive emails requesting urgent payroll verification due to a supposed payroll processing error.",
-            "detect": "The HR team reports multiple emails requesting payroll credential confirmation.",
-            "analyse": "Email headers reveal the sender domain was spoofed.",
-            "remediate": "Attackers attempt to modify payroll account details."
-        },
-        {
-            "title": "Dropbox Document Phishing",
-            "brief": "Employees receive a shared Dropbox document link appearing to contain important internal documents.",
-            "detect": "Employees report receiving a Dropbox document from an unknown sender.",
-            "analyse": "Security analysis reveals the link redirects to a credential harvesting page.",
-            "remediate": "Several users report entering their credentials."
-        },
-        {
-            "title": "SharePoint Document Access Scam",
-            "brief": "Users receive a SharePoint notification asking them to review an important document shared by management.",
-            "detect": "Employees report unusual SharePoint access notifications.",
-            "analyse": "The SharePoint link redirects to a malicious login portal.",
-            "remediate": "A compromised user account begins accessing multiple internal documents."
-        }
-    ]
-
-    ransomware_templates = [
-        {
-            "title": "Ransomware Outbreak in Finance Department",
-            "brief": "Several users report that financial documents are suddenly encrypted with unusual file extensions.",
-            "detect": "Users report files being inaccessible in a shared finance drive.",
-            "analyse": "Security tools detect mass file encryption activity.",
-            "remediate": "The infected workstation attempts to spread laterally."
-        }
-    ]
-
-    if topic == "phishing":
-        scenario = random.choice(phishing_templates)
-
-    elif topic == "ransomware":
-        scenario = random.choice(ransomware_templates)
-
-    else:
-        return {
-            "scenario_title": f"{topic.title()} Incident Simulation",
-            "scenario_brief": f"A {difficulty} level {topic} incident simulation has been generated.",
-            "injects": []
-        }
-
-    return {
-        "scenario_title": scenario["title"],
-        "scenario_brief": scenario["brief"],
-        "injects": [
-            {"phase": "Detect", "text": scenario["detect"]},
-            {"phase": "Analyse", "text": scenario["analyse"]},
-            {"phase": "Remediation", "text": scenario["remediate"]},
-        ],
-    }
-
-
-def choose_phase_question_counts(
-    ai_scenario: dict,
-    default_questions_per_stage: int,
-) -> Dict[str, int]:
-    """
-    Very simple logic:
-    - every phase gets at least the default count
-    - phases mentioned in AI injects can optionally be increased later
-
-    For now we keep it simple and stable.
-    """
-    return {phase: default_questions_per_stage for phase in PHASES_IN_ORDER}
-
-
-# =========================================================
-# HYBRID AI SESSION BUILDER
-# =========================================================
-
-@transaction.atomic
-def start_hybrid_ai_session(user, difficulty: str, topic: str, questions_per_stage: int = 2) -> dict:
-    """
-    Hybrid AI session:
-    - creates session
-    - generates AI scenario narrative
-    - keeps validated questions from DB playbook
-    - snapshots the selected questions into QuestionRuns
-
-    This is the best version for your project right now because:
-    - scenario is AI-generated
-    - rules/scoring stay grounded in your playbook
-    """
-    session = GameSession.objects.create(
-        user=user,
-        topic=topic,
-        difficulty=difficulty,
-        status="in_progress",
-        total_score=0,
-        wrong_count=0,
-    )
-
-    playbook = pick_playbook(
-        difficulty=difficulty,
-        playbook_slug=topic,
-    )
-
-    ai_scenario = generate_mock_ai_scenario(
-        topic=topic,
-        difficulty=difficulty,
-    )
-
-    stage_runs = build_stage_runs(session)
-    phase_question_counts = choose_phase_question_counts(
-        ai_scenario=ai_scenario,
-        default_questions_per_stage=questions_per_stage,
-    )
-
-    for phase, stage_run in stage_runs.items():
-        questions = get_questions_for_phase(playbook, phase)
-        random.shuffle(questions)
-
-        count = phase_question_counts.get(phase, questions_per_stage)
-        selected = questions[:count]
-
         snapshot_questions_to_stage(stage_run, selected)
 
     return {
