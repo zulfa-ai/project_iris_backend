@@ -1,0 +1,375 @@
+{
+  "version": 1,
+  "playbook": "dos",
+  "difficulty": "hard",
+  "stage": 3,
+  "questions": [
+    {
+      "external_id": "dos-hard-s3-prepare-001",
+      "phase": "Prepare",
+      "prompt": "It has been several months since the incident response plan was reviewed. What is the most effective way to stay prepared?",
+      "options": [
+        { "label": "A", "text": "Run a short tabletop exercise with key staff", "delta_score": 10 },
+        { "label": "B", "text": "Email the document to staff to read it in their own time", "delta_score": -5 },
+        { "label": "C", "text": "Assume the plan will work without testing", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-prepare-002",
+      "phase": "Prepare",
+      "prompt": "A competitor recently experienced a large-scale service outage due to a DoS attack. How should your organisation respond?",
+      "options": [
+        { "label": "A", "text": "Review what happened and assess your own exposure", "delta_score": 10 },
+        { "label": "B", "text": "Acknowledge it but take no action", "delta_score": -5 },
+        { "label": "C", "text": "Assume your organisation is too small to be targeted", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-prepare-003",
+      "phase": "Prepare",
+      "prompt": "Industry alerts indicate increased DoS activity targeting your sector. What should leadership do?",
+      "options": [
+        { "label": "A", "text": "Confirm IT is aware and protective measures are in place", "delta_score": 10 },
+        { "label": "B", "text": "Wait until disruption happens", "delta_score": -5 },
+        { "label": "C", "text": "Ignore alerts as background noise", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-prepare-004",
+      "phase": "Prepare",
+      "prompt": "During a meeting, no one is sure where the response procedures are stored. What is the correct approach?",
+      "options": [
+        { "label": "A", "text": "Ensure updated procedures are centrally accessible", "delta_score": 10 },
+        { "label": "B", "text": "Keep copies on individual managers’ devices", "delta_score": -5 },
+        { "label": "C", "text": "Rely on memory instead of documentation", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-prepare-005",
+      "phase": "Prepare",
+      "prompt": "You want to detect unusual traffic patterns early. What preparation helps us most?",
+      "options": [
+        { "label": "A", "text": "Understand what normal traffic levels look like", "delta_score": 10 },
+        { "label": "B", "text": "Only review systems during a crisis", "delta_score": -5 },
+        { "label": "C", "text": "Assume systems will alert automatically", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-prepare-006",
+      "phase": "Prepare",
+      "prompt": "Employees are unfamiliar with how service disruptions should be reported. What improves readiness?",
+      "options": [
+        { "label": "A", "text": "Train staff on how to recognise and report service issues", "delta_score": 10 },
+        { "label": "B", "text": "Provide training only to IT", "delta_score": -5 },
+        { "label": "C", "text": "Assume staff will know what to do", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-prepare-007",
+      "phase": "Prepare",
+      "prompt": "If email systems go down during an attack, communication may fail. What is the safest preparation?",
+      "options": [
+        { "label": "A", "text": "Set up alternative communication channels", "delta_score": 10 },
+        { "label": "B", "text": "Use the same systems even during outage", "delta_score": -5 },
+        { "label": "C", "text": "Decide how to communicate during the crisis", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "dos-hard-s3-detect-001",
+      "phase": "Detect",
+      "prompt": "Customers report that your website is suddenly unreachable. What is your first action?",
+      "options": [
+        { "label": "A", "text": "Notify IT/security immediately", "delta_score": 10 },
+        { "label": "B", "text": "Wait to see if the issue resolves", "delta_score": -5 },
+        { "label": "C", "text": "Ignore until complaints increase", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-detect-002",
+      "phase": "Detect",
+      "prompt": "Staff report slow systems, website timeouts, and repeated disconnects. What should you assume?",
+      "options": [
+        { "label": "A", "text": "Treat it as a potential security issue and escalate", "delta_score": 10 },
+        { "label": "B", "text": "Assume it is a routine maintenance", "delta_score": -5 },
+        { "label": "C", "text": "Blame user error", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-detect-003",
+      "phase": "Detect",
+      "prompt": "Monitoring tools generate high traffic alerts overnight. What is the correct response?",
+      "options": [
+        { "label": "A", "text": "Investigate alerts promptly", "delta_score": 10 },
+        { "label": "B", "text": "Silence alerts temporarily", "delta_score": -5 },
+        { "label": "C", "text": "Disable monitoring to reduce noise", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-detect-004",
+      "phase": "Detect",
+      "prompt": "Traffic spikes continue and services degrade further. What should leadership do?",
+      "options": [
+        { "label": "A", "text": "Activate the Cyber Incident Response Team", "delta_score": 10 },
+        { "label": "B", "text": "Let IT handle it informally", "delta_score": -5 },
+        { "label": "C", "text": "Delay action to avoid panic", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-detect-005",
+      "phase": "Detect",
+      "prompt": "Multiple departments report disruption. What information is most useful?",
+      "options": [
+        { "label": "A", "text": "Record time, systems affected, and impact", "delta_score": 10 },
+        { "label": "B", "text": "Gather informal updates only", "delta_score": -5 },
+        { "label": "C", "text": "Focus only on restoring systems", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-detect-006",
+      "phase": "Detect",
+      "prompt": "Service disruption exceeds acceptable downtime limits. What should happen?",
+      "options": [
+        { "label": "A", "text": "Escalate according to defined thresholds", "delta_score": 10 },
+        { "label": "B", "text": "Decide escalation based on personal judgement", "delta_score": -5 },
+        { "label": "C", "text": "Avoid escalation to reduce attention", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-detect-007",
+      "phase": "Detect",
+      "prompt": "The attack appears coordinated and sustained. What is the prudent action?",
+      "options": [
+        { "label": "A", "text": "Consider engaging specialists to analyse traffic patterns", "delta_score": 10 },
+        { "label": "B", "text": "Wait until systems fail completely", "delta_score": -5 },
+        { "label": "C", "text": "Assume no further investigation is required", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "dos-hard-s3-analyse-001",
+      "phase": "Analyse",
+      "prompt": "Business leaders are unsure whether this is malicious or technical failure. What should you do?",
+      "options": [
+        { "label": "A", "text": "Involve security specialists immediately", "delta_score": 10 },
+        { "label": "B", "text": "Rely on general admin staff", "delta_score": -5 },
+        { "label": "C", "text": "Delay technical involvement", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-analyse-002",
+      "phase": "Analyse",
+      "prompt": "You suspect systems may be intentionally overwhelmed. What needs confirmation?",
+      "options": [
+        { "label": "A", "text": "Whether systems are under deliberate attack", "delta_score": 10 },
+        { "label": "B", "text": "Assume it is routine traffic growth", "delta_score": -5 },
+        { "label": "C", "text": "Ignore signs of abnormal activity", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-analyse-003",
+      "phase": "Analyse",
+      "prompt": "Service outages spread to additional platforms. What should be assessed?",
+      "options": [
+        { "label": "A", "text": "Business impact and whether other systems are targeted", "delta_score": 10 },
+        { "label": "B", "text": "Only the most visible system", "delta_score": -5 },
+        { "label": "C", "text": "Ignore potential wider impact", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-analyse-004",
+      "phase": "Analyse",
+      "prompt": "You need clarity on how events unfolded. What helps most?",
+      "options": [
+        { "label": "A", "text": "Document when issues started and escalated", "delta_score": 10 },
+        { "label": "B", "text": "Estimate roughly from memory", "delta_score": -5 },
+        { "label": "C", "text": "Skip timeline documentation", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-analyse-005",
+      "phase": "Analyse",
+      "prompt": "Technical teams suggest different attack patterns. What should leadership request?",
+      "options": [
+        { "label": "A", "text": "Clear explanation of attack type and risks", "delta_score": 10 },
+        { "label": "B", "text": "Ignore technical distinctions", "delta_score": -5 },
+        { "label": "C", "text": "Dismiss further analysis", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-analyse-006",
+      "phase": "Analyse",
+      "prompt": "Security teams request deeper traffic analysis. What is the correct response?",
+      "options": [
+        { "label": "A", "text": "Approve detailed analysis to understand the attack", "delta_score": 10 },
+        { "label": "B", "text": "Delay approval to reduce costs", "delta_score": -5 },
+        { "label": "C", "text": "Reject further investigation", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-analyse-007",
+      "phase": "Analyse",
+      "prompt": "Logs may help identify the attack source. What should be done?",
+      "options": [
+        { "label": "A", "text": "Preserve and share logs securely with investigators", "delta_score": 10 },
+        { "label": "B", "text": "Delete old logs to free storage", "delta_score": -5 },
+        { "label": "C", "text": "Ignore log data", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-analyse-008",
+      "phase": "Analyse",
+      "prompt": "There are concerns the attack may be distracting from data theft. What is safest?",
+      "options": [
+        { "label": "A", "text": "Consult the Data Protection Officer to assess risk", "delta_score": 10 },
+        { "label": "B", "text": "Assume no data risk", "delta_score": -5 },
+        { "label": "C", "text": "Avoid regulatory involvement", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "dos-hard-s3-remediation-001",
+      "phase": "Remediation",
+      "prompt": "Traffic is overwhelming servers. What immediate step can reduce impact?",
+      "options": [
+        { "label": "A", "text": "Work with ISP to block malicious traffic", "delta_score": 10 },
+        { "label": "B", "text": "Wait for traffic to subside naturally", "delta_score": -5 },
+        { "label": "C", "text": "Take no external action", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-remediation-002",
+      "phase": "Remediation",
+      "prompt": "Core services remain unavailable. What should leadership consider?",
+      "options": [
+        { "label": "A", "text": "Activate the Business Continuity Plan", "delta_score": 10 },
+        { "label": "B", "text": "Wait indefinitely for recovery", "delta_score": -5 },
+        { "label": "C", "text": "Ignore continuity planning", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-remediation-003",
+      "phase": "Remediation",
+      "prompt": "Attack traffic continues at high levels. What helps mitigate damage?",
+      "options": [
+        { "label": "A", "text": "Apply traffic filtering at network edge", "delta_score": 10 },
+        { "label": "B", "text": "Rely only on internal systems", "delta_score": -5 },
+        { "label": "C", "text": "Make no adjustments", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-remediation-004",
+      "phase": "Remediation",
+      "prompt": "Technical teams propose multiple mitigation steps. What should you do?",
+      "options": [
+        { "label": "A", "text": "Approve and coordinate mitigation efforts", "delta_score": 10 },
+        { "label": "B", "text": "Delay decisions for cost review", "delta_score": -5 },
+        { "label": "C", "text": "Refuse mitigation changes", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-remediation-005",
+      "phase": "Remediation",
+      "prompt": "Sensitive systems are exposed online. What reduces risk?",
+      "options": [
+        { "label": "A", "text": "Restrict access to approved IP ranges", "delta_score": 10 },
+        { "label": "B", "text": "Leave systems publicly accessible", "delta_score": -5 },
+        { "label": "C", "text": "Remove monitoring controls", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-remediation-006",
+      "phase": "Remediation",
+      "prompt": "Vulnerabilities may have enabled the attack. What is the best response?",
+      "options": [
+        { "label": "A", "text": "Apply security updates promptly", "delta_score": 10 },
+        { "label": "B", "text": "Delay patching until later", "delta_score": -5 },
+        { "label": "C", "text": "Ignore update recommendations", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-remediation-007",
+      "phase": "Remediation",
+      "prompt": "Traffic levels return to normal. How should services be restored?",
+      "options": [
+        { "label": "A", "text": "Gradually restore with monitoring checks", "delta_score": 10 },
+        { "label": "B", "text": "Resume full services immediately", "delta_score": -5 },
+        { "label": "C", "text": "Resume without validations", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "dos-hard-s3-post-001",
+      "phase": "Post-Incident",
+      "prompt": "The attack has ended. What documentation is required?",
+      "options": [
+        { "label": "A", "text": "Produce a structured incident report", "delta_score": 10 },
+        { "label": "B", "text": "Send a brief summary email", "delta_score": -5 },
+        { "label": "C", "text": "Avoid documentation", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-post-002",
+      "phase": "Post-Incident",
+      "prompt": "Leadership wants to prevent recurrence. What is the most effective?",
+      "options": [
+        { "label": "A", "text": "Review response and update controls formally", "delta_score": 10 },
+        { "label": "B", "text": "Informally discuss improvements", "delta_score": -5 },
+        { "label": "C", "text": "Assume the issue will not repeat", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-post-003",
+      "phase": "Post-Incident",
+      "prompt": "Employees experienced service disruption. What should be done?",
+      "options": [
+        { "label": "A", "text": "Educate staff on what happened and how to report issues", "delta_score": 10 },
+        { "label": "B", "text": "Share minimal details", "delta_score": -5 },
+        { "label": "C", "text": "Provide no communication", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "dos-hard-s3-post-004",
+      "phase": "Post-Incident",
+      "prompt": "Weaknesses were identified during the response. What is the appropriate step?",
+      "options": [
+        { "label": "A", "text": "Update response documentation and test it", "delta_score": 10 },
+        { "label": "B", "text": "Make small edits only", "delta_score": -5 },
+        { "label": "C", "text": "Leave documents unchanged", "delta_score": -10 }
+      ],
+      "is_active": true
+    }
+  ]
+}

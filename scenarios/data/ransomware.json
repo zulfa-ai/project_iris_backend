@@ -1,0 +1,298 @@
+{
+  "version": 1,
+  "playbook": "ransomware",
+  "difficulty": "easy",
+  "stage": 1,
+  "questions": [
+    {
+      "external_id": "ransomware-easy-s1-prepare-001",
+      "phase": "Prepare",
+      "prompt": "Backups and response plans haven’t been reviewed recently. What should be done?",
+      "options": [
+        { "label": "A", "text": "Review backup availability and test recovery process", "delta_score": 10 },
+        { "label": "B", "text": "Assume backups work because they ran last year", "delta_score": -5 },
+        { "label": "C", "text": "Ignore unless an incident occurs", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-prepare-002",
+      "phase": "Prepare",
+      "prompt": "A warning is issued about ransomware targeting your industry. What is the best action?",
+      "options": [
+        { "label": "A", "text": "Inform IT/security and check protections immediately", "delta_score": 10 },
+        { "label": "B", "text": "Wait to see if attacks increase first", "delta_score": -5 },
+        { "label": "C", "text": "Assume antivirus will handle it", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-prepare-003",
+      "phase": "Prepare",
+      "prompt": "Staff training on ransomware is scheduled. Why is this important?",
+      "options": [
+        { "label": "A", "text": "It helps staff recognise suspicious behaviour early", "delta_score": 10 },
+        { "label": "B", "text": "It is mainly a compliance exercise", "delta_score": -5 },
+        { "label": "C", "text": "Staff do not need training on ransomware", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-prepare-004",
+      "phase": "Prepare",
+      "prompt": "Your organisation is considering external investigation support. What is the key benefit?",
+      "options": [
+        { "label": "A", "text": "Faster response and expert guidance during an incident", "delta_score": 10 },
+        { "label": "B", "text": "Only useful after systems fail", "delta_score": -5 },
+        { "label": "C", "text": "Not necessary unless an attack happens first", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "ransomware-easy-s1-detect-001",
+      "phase": "Detect",
+      "prompt": "A user reports files suddenly cannot be opened. What should the service desk do?",
+      "options": [
+        { "label": "A", "text": "Log the incident and escalate immediately", "delta_score": 10 },
+        { "label": "B", "text": "Ask the user to restart their computer", "delta_score": -5 },
+        { "label": "C", "text": "Ignore unless more reports appear", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-detect-002",
+      "phase": "Detect",
+      "prompt": "Several machines show ransom messages. What should happen?",
+      "options": [
+        { "label": "A", "text": "Activate the incident response team immediately", "delta_score": 10 },
+        { "label": "B", "text": "Wait to see if systems recover themselves", "delta_score": -5 },
+        { "label": "C", "text": "Let local IT handle it alone", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-detect-003",
+      "phase": "Detect",
+      "prompt": "One department is affected. What should be checked first?",
+      "options": [
+        { "label": "A", "text": "Whether other systems or shared drives are impacted", "delta_score": 10 },
+        { "label": "B", "text": "Only fix the first machine", "delta_score": -5 },
+        { "label": "C", "text": "Assume the issue is isolated", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-detect-004",
+      "phase": "Detect",
+      "prompt": "Early response begins. What information is most important to collect?",
+      "options": [
+        { "label": "A", "text": "When it started, what systems are affected, and what users saw", "delta_score": 10 },
+        { "label": "B", "text": "Only screenshots of ransom messages", "delta_score": -5 },
+        { "label": "C", "text": "Skip data collection and focus only on fixing systems", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-detect-005",
+      "phase": "Detect",
+      "prompt": "Ransomware is confirmed on multiple systems. What should happen?",
+      "options": [
+        { "label": "A", "text": "Escalate according to incident response procedures", "delta_score": 10 },
+        { "label": "B", "text": "Handle it quietly within the department", "delta_score": -5 },
+        { "label": "C", "text": "Avoid escalation to reduce concern", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-detect-006",
+      "phase": "Detect",
+      "prompt": "Investigation may be required. What should staff be told?",
+      "options": [
+        { "label": "A", "text": "Leave affected systems as they are and follow instructions", "delta_score": 10 },
+        { "label": "B", "text": "Restart computers to try fixing the issue", "delta_score": -5 },
+        { "label": "C", "text": "Delete suspicious files themselves", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "ransomware-easy-s1-analyse-001",
+      "phase": "Analyse",
+      "prompt": "The scale of the attack is unclear. What should happen?",
+      "options": [
+        { "label": "A", "text": "Involve IT/security specialists immediately", "delta_score": 10 },
+        { "label": "B", "text": "Ask general staff to troubleshoot", "delta_score": -5 },
+        { "label": "C", "text": "Delay involvement until systems fail completely", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-analyse-002",
+      "phase": "Analyse",
+      "prompt": "IT wants to identify the ransomware type. Why is this useful?",
+      "options": [
+        { "label": "A", "text": "It helps determine recovery options and risk level", "delta_score": 10 },
+        { "label": "B", "text": "Only needed for technical curiosity", "delta_score": -5 },
+        { "label": "C", "text": "Not necessary for response", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-analyse-003",
+      "phase": "Analyse",
+      "prompt": "Files across shared drives are encrypted. What must be assessed?",
+      "options": [
+        { "label": "A", "text": "Which departments, systems, and data are affected", "delta_score": 10 },
+        { "label": "B", "text": "Only the first device reported", "delta_score": -5 },
+        { "label": "C", "text": "Treat as a single-user issue", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-analyse-004",
+      "phase": "Analyse",
+      "prompt": "If IT says they need to analyse a suspicious file, what should staff do?",
+      "options": [
+        { "label": "A", "text": "Send it only through the official reporting channel", "delta_score": 10 },
+        { "label": "B", "text": "Forward to colleagues to ask opinions", "delta_score": -5 },
+        { "label": "C", "text": "Try opening it on another device", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-analyse-005",
+      "phase": "Analyse",
+      "prompt": "Sensitive business files may be affected. What is critical now?",
+      "options": [
+        { "label": "A", "text": "Confirm which systems and data are impacted", "delta_score": 10 },
+        { "label": "B", "text": "Focus only on restoring computers", "delta_score": -5 },
+        { "label": "C", "text": "Assume all data is equally affected", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-analyse-006",
+      "phase": "Analyse",
+      "prompt": "There is a risk customer data may be exposed. What is safest?",
+      "options": [
+        { "label": "A", "text": "Escalate to the data protection lead for assessment", "delta_score": 10 },
+        { "label": "B", "text": "Monitor quietly first", "delta_score": -5 },
+        { "label": "C", "text": "Avoid reporting to protect reputation", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "ransomware-easy-s1-remediation-001",
+      "phase": "Remediation",
+      "prompt": "Encryption activity is still happening. What should be done?",
+      "options": [
+        { "label": "A", "text": "Isolate affected machines immediately", "delta_score": 10 },
+        { "label": "B", "text": "Wait to see if it stops on its own", "delta_score": -5 },
+        { "label": "C", "text": "Keep systems running to avoid disruption", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-remediation-002",
+      "phase": "Remediation",
+      "prompt": "Suspicious logins are detected. Why suspend accounts?",
+      "options": [
+        { "label": "A", "text": "To stop attackers from continuing access", "delta_score": 10 },
+        { "label": "B", "text": "Only to follow procedure", "delta_score": -5 },
+        { "label": "C", "text": "Not needed unless systems fail again", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-remediation-003",
+      "phase": "Remediation",
+      "prompt": "IT begins system clean-up. What is important?",
+      "options": [
+        { "label": "A", "text": "Ensure all traces of ransomware are removed safely", "delta_score": 10 },
+        { "label": "B", "text": "Delete obvious infected files only", "delta_score": -5 },
+        { "label": "C", "text": "Resume work immediately", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-remediation-004",
+      "phase": "Remediation",
+      "prompt": "Recovery planning begins. Why restore from trusted backups?",
+      "options": [
+        { "label": "A", "text": "It ensures systems return without hidden infection", "delta_score": 10 },
+        { "label": "B", "text": "It’s just the fastest way to recover", "delta_score": -5 },
+        { "label": "C", "text": "Not necessary if systems start working again", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-remediation-005",
+      "phase": "Remediation",
+      "prompt": "IT proposes rebuilding machines completely. Is this necessary?",
+      "options": [
+        { "label": "A", "text": "Yes, to confirm no hidden compromise remains", "delta_score": 10 },
+        { "label": "B", "text": "Only if users complain again", "delta_score": -5 },
+        { "label": "C", "text": "No, once files return, everything is safe", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-remediation-006",
+      "phase": "Remediation",
+      "prompt": "Systems appear stable again. How should recovery proceed?",
+      "options": [
+        { "label": "A", "text": "Restore gradually and confirm everything is safe", "delta_score": 10 },
+        { "label": "B", "text": "Turn everything back on immediately", "delta_score": -5 },
+        { "label": "C", "text": "Let departments restart systems themselves", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "ransomware-easy-s1-post-001",
+      "phase": "Post-Incident",
+      "prompt": "The incident is resolved. What is the main purpose of the report?",
+      "options": [
+        { "label": "A", "text": "Document what happened and improve future response", "delta_score": 10 },
+        { "label": "B", "text": "Only record who was responsible", "delta_score": -5 },
+        { "label": "C", "text": "Avoid writing one to reduce visibility", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-post-002",
+      "phase": "Post-Incident",
+      "prompt": "How should the organisation use this incident?",
+      "options": [
+        { "label": "A", "text": "Review gaps and improve controls and training", "delta_score": 10 },
+        { "label": "B", "text": "Discuss informally only", "delta_score": -5 },
+        { "label": "C", "text": "Move on without review", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-post-003",
+      "phase": "Post-Incident",
+      "prompt": "Employees know about the incident. What is best?",
+      "options": [
+        { "label": "A", "text": "Share guidance to help prevent future ransomware attacks", "delta_score": 10 },
+        { "label": "B", "text": "Tell only management", "delta_score": -5 },
+        { "label": "C", "text": "Avoid discussing it", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "ransomware-easy-s1-post-004",
+      "phase": "Post-Incident",
+      "prompt": "Weaknesses in procedures were identified. What now?",
+      "options": [
+        { "label": "A", "text": "Update response plans and security controls formally", "delta_score": 10 },
+        { "label": "B", "text": "Make small notes only", "delta_score": -5 },
+        { "label": "C", "text": "Leave documentation unchanged", "delta_score": -10 }
+      ],
+      "is_active": true
+    }
+  ]
+}

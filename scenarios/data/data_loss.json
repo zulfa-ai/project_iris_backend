@@ -1,0 +1,408 @@
+{
+  "version": 1,
+  "playbook": "data_loss",
+  "difficulty": "hard",
+  "stage": 3,
+  "questions": [
+    {
+      "external_id": "data-loss-hard-s3-prepare-001",
+      "phase": "Prepare",
+      "prompt": "It’s been 6 months since the CIRP was reviewed. What should you do?",
+      "options": [
+        { "label": "A", "text": "Schedule a walkthrough exercise with key staff", "delta_score": 10 },
+        { "label": "B", "text": "Skim the document yourself", "delta_score": -5 },
+        { "label": "C", "text": "Assume it’s fine and do nothing", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-prepare-002",
+      "phase": "Prepare",
+      "prompt": "Other organisations in your sector experienced recent data loss incidents. How do you respond?",
+      "options": [
+        { "label": "A", "text": "Review case studies and adjust internal controls", "delta_score": 10 },
+        { "label": "B", "text": "Read headlines only", "delta_score": -5 },
+        { "label": "C", "text": "Ignore", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-prepare-003",
+      "phase": "Prepare",
+      "prompt": "A new vulnerability affecting your software platform is reported. What action do you take?",
+      "options": [
+        { "label": "A", "text": "Alert IT and confirm patch status", "delta_score": 10 },
+        { "label": "B", "text": "Wait for someone else to mention it", "delta_score": -5 },
+        { "label": "C", "text": "Assume updates happen automatically", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-prepare-004",
+      "phase": "Prepare",
+      "prompt": "A team member asks where incident procedures are stored. What is the best approach?",
+      "options": [
+        { "label": "A", "text": "Ensure shared, controlled access to updated documentation", "delta_score": 10 },
+        { "label": "B", "text": "Keep documents saved locally on one manager’s device", "delta_score": -5 },
+        { "label": "C", "text": "Unsure where documentation is stored", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-prepare-005",
+      "phase": "Prepare",
+      "prompt": "Annual security training is due. What do you do?",
+      "options": [
+        { "label": "A", "text": "Deliver updated training with real examples", "delta_score": 10 },
+        { "label": "B", "text": "Re-send last year’s slides", "delta_score": -5 },
+        { "label": "C", "text": "Skip training to save time", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-prepare-006",
+      "phase": "Prepare",
+      "prompt": "You are reviewing business systems. What should be prioritised?",
+      "options": [
+        { "label": "A", "text": "Identifying critical systems and map where sensitive data flows", "delta_score": 10 },
+        { "label": "B", "text": "Focus only on the most visible systems", "delta_score": -5 },
+        { "label": "C", "text": "Assume all systems are equally important", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-prepare-007",
+      "phase": "Prepare",
+      "prompt": "Your organisation wants to improve evidence readiness. What action supports forensic readiness?",
+      "options": [
+        { "label": "A", "text": "Confirm logging, backups, and time synchronisation are enabled", "delta_score": 10 },
+        { "label": "B", "text": "Rely only on antivirus logs", "delta_score": -5 },
+        { "label": "C", "text": "No preparation and deal with the evidence later", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "data-loss-hard-s3-detect-001",
+      "phase": "Detect",
+      "prompt": "An employee reports suspicious file activity. What should the service desk do?",
+      "options": [
+        { "label": "A", "text": "Log incident formally and escalate immediately", "delta_score": 10 },
+        { "label": "B", "text": "Ask them to monitor it for now", "delta_score": -5 },
+        { "label": "C", "text": "Ignore unless multiple reports occur", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-detect-002",
+      "phase": "Detect",
+      "prompt": "You receive an alert that company data may be posted online. What is your first step?",
+      "options": [
+        { "label": "A", "text": "Validate the alert and notify the CIRT", "delta_score": 10 },
+        { "label": "B", "text": "Assume it’s a false alarm", "delta_score": -5 },
+        { "label": "C", "text": "Wait for customers to complain", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-detect-003",
+      "phase": "Detect",
+      "prompt": "Indicators suggest a confirmed breach. What do you do?",
+      "options": [
+        { "label": "A", "text": "Activate the Cyber Incident Response Team (CIRT)", "delta_score": 10 },
+        { "label": "B", "text": "Wait for senior approval before alerting anyone", "delta_score": -5 },
+        { "label": "C", "text": "Try handling it alone", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-detect-004",
+      "phase": "Detect",
+      "prompt": "Early evidence is coming in. What is most important?",
+      "options": [
+        { "label": "A", "text": "Document timeline, systems involved, and data types", "delta_score": 10 },
+        { "label": "B", "text": "Collect bits of information informally", "delta_score": -5 },
+        { "label": "C", "text": "Focus only on fixing systems", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-detect-005",
+      "phase": "Detect",
+      "prompt": "You suspect broader impact. What should you check?",
+      "options": [
+        { "label": "A", "text": "Logs, alerts, user reports, and monitoring tools", "delta_score": 10 },
+        { "label": "B", "text": "Only check one affected system", "delta_score": -5 },
+        { "label": "C", "text": "Assume issue is isolated", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-detect-006",
+      "phase": "Detect",
+      "prompt": "Systems may contain evidence. What do you do?",
+      "options": [
+        { "label": "A", "text": "Preserve logs and avoid altering affected systems", "delta_score": 10 },
+        { "label": "B", "text": "Reboot systems immediately", "delta_score": -5 },
+        { "label": "C", "text": "Delete suspicious files", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-detect-007",
+      "phase": "Detect",
+      "prompt": "Impact appears significant. What action aligns with policy?",
+      "options": [
+        { "label": "A", "text": "Escalate per defined thresholds", "delta_score": 10 },
+        { "label": "B", "text": "Decide escalation informally", "delta_score": -5 },
+        { "label": "C", "text": "Avoid escalation to reduce visibility", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-detect-008",
+      "phase": "Detect",
+      "prompt": "The breach may require investigation. What should be considered?",
+      "options": [
+        { "label": "A", "text": "Engage forensic specialists early", "delta_score": 10 },
+        { "label": "B", "text": "Wait until systems fail completely", "delta_score": -5 },
+        { "label": "C", "text": "Assume internal staff can manage alone", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "data-loss-hard-s3-analyse-001",
+      "phase": "Analyse",
+      "prompt": "Impact is unclear. What should happen?",
+      "options": [
+        { "label": "A", "text": "Involve IT/Security specialists immediately", "delta_score": 10 },
+        { "label": "B", "text": "Ask general admin staff to review", "delta_score": -5 },
+        { "label": "C", "text": "Delay technical involvement", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-analyse-002",
+      "phase": "Analyse",
+      "prompt": "Leaked data appears online. What should you verify?",
+      "options": [
+        { "label": "A", "text": "Whether data is real, current, and organisation-owned", "delta_score": 10 },
+        { "label": "B", "text": "Assume it’s authentic without checking", "delta_score": -5 },
+        { "label": "C", "text": "Deny authenticity publicly without evidence", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-analyse-003",
+      "phase": "Analyse",
+      "prompt": "Data compromised is confirmed. What must be assessed?",
+      "options": [
+        { "label": "A", "text": "Data classification, customer impact, legal risk", "delta_score": 10 },
+        { "label": "B", "text": "Only operational downtime", "delta_score": -5 },
+        { "label": "C", "text": "Ignore regulatory implications", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-analyse-004",
+      "phase": "Analyse",
+      "prompt": "Personal data may be involved. What is key?",
+      "options": [
+        { "label": "A", "text": "Determine if privacy laws apply", "delta_score": 10 },
+        { "label": "B", "text": "Focus only on technical damage", "delta_score": -5 },
+        { "label": "C", "text": "Assume no reporting required", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-analyse-005",
+      "phase": "Analyse",
+      "prompt": "Incident severity unclear. What supports consistency?",
+      "options": [
+        { "label": "A", "text": "Use formal categorisation framework", "delta_score": 10 },
+        { "label": "B", "text": "Classify based on personal judgement", "delta_score": -5 },
+        { "label": "C", "text": "Don’t classify at all", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-analyse-006",
+      "phase": "Analyse",
+      "prompt": "If personal customer information may have been exposed, what is the safest action?",
+      "options": [
+        { "label": "A", "text": "Escalate to the organisation’s data protection lead and check if authorities must be informed", "delta_score": 10 },
+        { "label": "B", "text": "Monitor quietly and hope the issue resolves", "delta_score": -5 },
+        { "label": "C", "text": "Avoid reporting to protect the company’s image", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "data-loss-hard-s3-remediation-001",
+      "phase": "Remediation",
+      "prompt": "Investigation confirms unauthorised access is ongoing and sensitive data may still be leaving the network. What should you do immediately?",
+      "options": [
+        { "label": "A", "text": "Isolate affected systems to prevent further data loss", "delta_score": 10 },
+        { "label": "B", "text": "Monitor activity but leave systems connected", "delta_score": -5 },
+        { "label": "C", "text": "Continue operations to avoid disruptions", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-remediation-002",
+      "phase": "Remediation",
+      "prompt": "IT proposes disconnecting multiple systems, but this may disrupt business operations. What is the best approach?",
+      "options": [
+        { "label": "A", "text": "Assess business impact while prioritising stopping the breach", "delta_score": 10 },
+        { "label": "B", "text": "Disconnect everything without coordination", "delta_score": -5 },
+        { "label": "C", "text": "Avoid containment to prevent downtime", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-remediation-003",
+      "phase": "Remediation",
+      "prompt": "One department’s computers appear compromised. What action is safest?",
+      "options": [
+        { "label": "A", "text": "Disconnect affected devices from the network while preserving evidence", "delta_score": 10 },
+        { "label": "B", "text": "Shut down all devices immediately", "delta_score": -5 },
+        { "label": "C", "text": "Leave devices online and continue working", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-remediation-004",
+      "phase": "Remediation",
+      "prompt": "Security tools may not be fully up to date. What should be done?",
+      "options": [
+        { "label": "A", "text": "Update security tools and run full scans across systems", "delta_score": 10 },
+        { "label": "B", "text": "Scan only the affected device", "delta_score": -5 },
+        { "label": "C", "text": "Assume protection is already sufficient", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-remediation-005",
+      "phase": "Remediation",
+      "prompt": "Customers are starting to ask questions about possible service disruption. How should leadership respond?",
+      "options": [
+        { "label": "A", "text": "Provide controlled, clear communication to stakeholders", "delta_score": 10 },
+        { "label": "B", "text": "Provide minimal information to avoid concern", "delta_score": -5 },
+        { "label": "C", "text": "Refuse to comment entirely", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-remediation-006",
+      "phase": "Remediation",
+      "prompt": "IT confirms malware presence on several machines. What is the most reliable recovery method?",
+      "options": [
+        { "label": "A", "text": "Rebuild affected systems from trusted backups", "delta_score": 10 },
+        { "label": "B", "text": "Remove visible malware only", "delta_score": -5 },
+        { "label": "C", "text": "Resume work without full system checks", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-remediation-007",
+      "phase": "Remediation",
+      "prompt": "The attacker demands payment in exchange for deleting stolen data. What should the organisation do?",
+      "options": [
+        { "label": "A", "text": "Consult legal and security experts before any response", "delta_score": 10 },
+        { "label": "B", "text": "Respond directly to negotiate", "delta_score": -5 },
+        { "label": "C", "text": "Immediately agree to pay", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-remediation-008",
+      "phase": "Remediation",
+      "prompt": "Systems appear stable and containment is complete. How should services be restored?",
+      "options": [
+        { "label": "A", "text": "Gradually restore systems with validation testing", "delta_score": 10 },
+        { "label": "B", "text": "Turn everything back on immediately", "delta_score": -5 },
+        { "label": "C", "text": "Skip validation checks to save time", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "data-loss-hard-s3-post-001",
+      "phase": "Post-Incident",
+      "prompt": "The incident has been resolved. What documentation is required?",
+      "options": [
+        { "label": "A", "text": "Produce a structured report detailing timeline, impact, and response", "delta_score": 10 },
+        { "label": "B", "text": "Write a short informal summary", "delta_score": -5 },
+        { "label": "C", "text": "Avoid documentation to limit exposure", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-post-002",
+      "phase": "Post-Incident",
+      "prompt": "Teams are returning to normal questions. What should happen next?",
+      "options": [
+        { "label": "A", "text": "Conduct a cross-functional debrief session", "delta_score": 10 },
+        { "label": "B", "text": "Leadership reviews privately", "delta_score": -5 },
+        { "label": "C", "text": "No formal review needed", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-post-003",
+      "phase": "Post-Incident",
+      "prompt": "Senior management requests cost analysis. What should be included?",
+      "options": [
+        { "label": "A", "text": "Assess direct, indirect, and reputational costs", "delta_score": 10 },
+        { "label": "B", "text": "Estimate roughly without detail", "delta_score": -5 },
+        { "label": "C", "text": "Avoid calculating to prevent concern", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-post-004",
+      "phase": "Post-Incident",
+      "prompt": "The organisation wants to prevent recurrence. What action is most effective?",
+      "options": [
+        { "label": "A", "text": "Update policies, controls, and training based on findings", "delta_score": 10 },
+        { "label": "B", "text": "Informally note lessons", "delta_score": -5 },
+        { "label": "C", "text": "Assume the issue will not recur", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-post-005",
+      "phase": "Post-Incident",
+      "prompt": "Employees are aware an incident occurred. How should leadership respond?",
+      "options": [
+        { "label": "A", "text": "Share clear guidance and reinforce security expectations", "delta_score": 10 },
+        { "label": "B", "text": "Share limited details with managers only", "delta_score": -5 },
+        { "label": "C", "text": "Avoid communication to reduce attention", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-post-006",
+      "phase": "Post-Incident",
+      "prompt": "Weaknesses were identified in procedures. What should be done?",
+      "options": [
+        { "label": "A", "text": "Revise incident response documentation formally", "delta_score": 10 },
+        { "label": "B", "text": "Make minor edits only", "delta_score": -5 },
+        { "label": "C", "text": "Leave documentation unchanged", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "data-loss-hard-s3-post-007",
+      "phase": "Post-Incident",
+      "prompt": "Improvements have been made to the response plan. What should happen next?",
+      "options": [
+        { "label": "A", "text": "Run a simulation or tabletop exercise", "delta_score": 10 },
+        { "label": "B", "text": "Assume updates are sufficient", "delta_score": -5 },
+        { "label": "C", "text": "Do not test changes", "delta_score": -10 }
+      ],
+      "is_active": true
+    }
+  ]
+}

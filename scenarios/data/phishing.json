@@ -1,0 +1,320 @@
+{
+  "version": 1,
+  "playbook": "phishing",
+  "difficulty": "easy",
+  "stage": 1,
+  "questions": [
+    {
+      "external_id": "phish-easy-s1-prepare-001",
+      "phase": "Prepare",
+      "prompt": "It has been several months since phishing response procedures were tested. What should you do?",
+      "options": [
+        { "label": "A", "text": "Schedule a phishing response exercise with relevant teams", "delta_score": 10 },
+        { "label": "B", "text": "Quickly reread the policy alone", "delta_score": -5 },
+        { "label": "C", "text": "Assume staff remember what to do", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-prepare-002",
+      "phase": "Prepare",
+      "prompt": "Recent phishing attempts were reported internally. How should this be used?",
+      "options": [
+        { "label": "A", "text": "Share lessons learned and update awareness materials", "delta_score": 10 },
+        { "label": "B", "text": "File the report for record purposes only", "delta_score": -5 },
+        { "label": "C", "text": "Ignore since the incident is already closed", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-prepare-003",
+      "phase": "Prepare",
+      "prompt": "Security bulletins warn of a new phishing campaign targeting your industry. What is the best response?",
+      "options": [
+        { "label": "A", "text": "Alert staff and remind them what to watch for", "delta_score": 10 },
+        { "label": "B", "text": "Wait until someone reports a similar email", "delta_score": -5 },
+        { "label": "C", "text": "Assume filters will block everything", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-prepare-004",
+      "phase": "Prepare",
+      "prompt": "A new employee asks how to report suspicious emails. What should happen?",
+      "options": [
+        { "label": "A", "text": "Direct them to the official reporting channel and guidance", "delta_score": 10 },
+        { "label": "B", "text": "Tell them to ask their manager if it happens", "delta_score": -5 },
+        { "label": "C", "text": "Say IT will notice automatically", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-prepare-005",
+      "phase": "Prepare",
+      "prompt": "Phishing training is due for renewal. What approach is most effective?",
+      "options": [
+        { "label": "A", "text": "Use updated examples and simulate real phishing scenarios", "delta_score": 10 },
+        { "label": "B", "text": "Send a reminder email about security", "delta_score": -5 },
+        { "label": "C", "text": "Skip training this year to reduce workload", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "phish-easy-s1-detect-001",
+      "phase": "Detect",
+      "prompt": "An employee forwards a suspicious email. What should the service desk do first?",
+      "options": [
+        { "label": "A", "text": "Log it as a security incident and escalate", "delta_score": 10 },
+        { "label": "B", "text": "Tell the employee to delete it and move on", "delta_score": -5 },
+        { "label": "C", "text": "Ignore unless more people report it", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-detect-002",
+      "phase": "Detect",
+      "prompt": "Multiple users report similar suspicious emails. What should happen?",
+      "options": [
+        { "label": "A", "text": "Notify and activate the incident response team", "delta_score": 10 },
+        { "label": "B", "text": "Wait to see if anyone clicks the link", "delta_score": -5 },
+        { "label": "C", "text": "Let helpdesk handle it alone", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-detect-003",
+      "phase": "Detect",
+      "prompt": "The message appears to be from senior management requesting urgent action. What is important now?",
+      "options": [
+        { "label": "A", "text": "Verify authenticity before anyone responds", "delta_score": 10 },
+        { "label": "B", "text": "Assume it’s real due to the sender’s name", "delta_score": -5 },
+        { "label": "C", "text": "Ask staff to respond quickly just in case", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-detect-004",
+      "phase": "Detect",
+      "prompt": "Reports show some staff opened the email. What should be confirmed?",
+      "options": [
+        { "label": "A", "text": "Who received it, who clicked, and possible impact", "delta_score": 10 },
+        { "label": "B", "text": "Only how many emails were sent", "delta_score": -5 },
+        { "label": "C", "text": "Skip checking and move straight to fixing systems", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-detect-005",
+      "phase": "Detect",
+      "prompt": "The email requested login credentials. What should you do?",
+      "options": [
+        { "label": "A", "text": "Escalate according to defined phishing severity levels", "delta_score": 10 },
+        { "label": "B", "text": "Handle informally within the team", "delta_score": -5 },
+        { "label": "C", "text": "Avoid escalation to prevent alarm", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-detect-006",
+      "phase": "Detect",
+      "prompt": "IT wants to investigate affected accounts. What should staff be told?",
+      "options": [
+        { "label": "A", "text": "Keep emails and avoid deleting evidence", "delta_score": 10 },
+        { "label": "B", "text": "Clean inboxes immediately", "delta_score": -5 },
+        { "label": "C", "text": "Ignore instructions and continue working", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "phish-easy-s1-analyse-001",
+      "phase": "Analyse",
+      "prompt": "It is unclear whether accounts were compromised. What should happen?",
+      "options": [
+        { "label": "A", "text": "Involve IT/security specialists immediately", "delta_score": 10 },
+        { "label": "B", "text": "Ask users to check their own accounts first", "delta_score": -5 },
+        { "label": "C", "text": "Wait until systems fail", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-analyse-002",
+      "phase": "Analyse",
+      "prompt": "Some employees clicked the link. What must be confirmed?",
+      "options": [
+        { "label": "A", "text": "Whether credentials or data were entered", "delta_score": 10 },
+        { "label": "B", "text": "Only whether the email looked convincing", "delta_score": -5 },
+        { "label": "C", "text": "Assume nothing happened", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-analyse-003",
+      "phase": "Analyse",
+      "prompt": "Several departments received the phishing email. What should be assessed?",
+      "options": [
+        { "label": "A", "text": "Number of users affected and possible data exposure", "delta_score": 10 },
+        { "label": "B", "text": "Only the first person who reported it", "delta_score": -5 },
+        { "label": "C", "text": "Treat it as a single-user issue", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-analyse-004",
+      "phase": "Analyse",
+      "prompt": "The phishing message may still be circulating internally. What should be checked?",
+      "options": [
+        { "label": "A", "text": "Whether it was forwarded or spread through replies", "delta_score": 10 },
+        { "label": "B", "text": "Only the original inbox", "delta_score": -5 },
+        { "label": "C", "text": "Assume the issue stopped already", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-analyse-005",
+      "phase": "Analyse",
+      "prompt": "One user entered login details on the phishing site. What is critical now?",
+      "options": [
+        { "label": "A", "text": "Check account access, data exposure, and connected systems", "delta_score": 10 },
+        { "label": "B", "text": "Reset password only and move on", "delta_score": -5 },
+        { "label": "C", "text": "Assume no damage occurred", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-analyse-006",
+      "phase": "Analyse",
+      "prompt": "The compromised account contains customer data. What is safest?",
+      "options": [
+        { "label": "A", "text": "Escalate to the data protection lead for assessment", "delta_score": 10 },
+        { "label": "B", "text": "Monitor quietly without informing anyone", "delta_score": -5 },
+        { "label": "C", "text": "Avoid reporting to reduce concern", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "phish-easy-s1-remediation-001",
+      "phase": "Remediation",
+      "prompt": "Suspicious login activity is ongoing. What should be done?",
+      "options": [
+        { "label": "A", "text": "Immediately restrict affected accounts", "delta_score": 10 },
+        { "label": "B", "text": "Observe activity for a while first", "delta_score": -5 },
+        { "label": "C", "text": "Ignore to avoid disruption", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-remediation-002",
+      "phase": "Remediation",
+      "prompt": "A user confirms their password was entered on the phishing site. What now?",
+      "options": [
+        { "label": "A", "text": "Force password reset and secure the account", "delta_score": 10 },
+        { "label": "B", "text": "Ask them to change it later", "delta_score": -5 },
+        { "label": "C", "text": "Do nothing unless misuse appears", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-remediation-003",
+      "phase": "Remediation",
+      "prompt": "An attachment from the phishing email was opened. What is the safest response?",
+      "options": [
+        { "label": "A", "text": "Scan and clean affected devices immediately", "delta_score": 10 },
+        { "label": "B", "text": "Wait to see if problems appear", "delta_score": -5 },
+        { "label": "C", "text": "Assume antivirus already handled it", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-remediation-004",
+      "phase": "Remediation",
+      "prompt": "Some machines were taken offline. How should they return to use?",
+      "options": [
+        { "label": "A", "text": "Restore safely and confirm they are clean", "delta_score": 10 },
+        { "label": "B", "text": "Put them back online quickly", "delta_score": -5 },
+        { "label": "C", "text": "Skip checks to save time", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-remediation-005",
+      "phase": "Remediation",
+      "prompt": "After the incident, what additional step strengthens security?",
+      "options": [
+        { "label": "A", "text": "Enforce MFA or extra monitoring on affected accounts", "delta_score": 10 },
+        { "label": "B", "text": "Send a reminder to be careful next time", "delta_score": -5 },
+        { "label": "C", "text": "Take no additional action", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-remediation-006",
+      "phase": "Remediation",
+      "prompt": "IT suspects deeper compromise. What approach is most reliable?",
+      "options": [
+        { "label": "A", "text": "Rebuild devices from trusted sources", "delta_score": 10 },
+        { "label": "B", "text": "Delete suspicious files only", "delta_score": -5 },
+        { "label": "C", "text": "Resume use without checks", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-remediation-007",
+      "phase": "Remediation",
+      "prompt": "Systems appear stable again. What should be done before full resumption?",
+      "options": [
+        { "label": "A", "text": "Confirm risks are removed and communicate clearance", "delta_score": 10 },
+        { "label": "B", "text": "Resume operations immediately", "delta_score": -5 },
+        { "label": "C", "text": "Let each team decide independently", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+
+    {
+      "external_id": "phish-easy-s1-post-001",
+      "phase": "Post-Incident",
+      "prompt": "The phishing incident is resolved. What documentation is needed?",
+      "options": [
+        { "label": "A", "text": "A structured report with timeline, impact and response", "delta_score": 10 },
+        { "label": "B", "text": "Short email summary only", "delta_score": -5 },
+        { "label": "C", "text": "Avoid documentation", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-post-002",
+      "phase": "Post-Incident",
+      "prompt": "How should the organisation use this incident?",
+      "options": [
+        { "label": "A", "text": "Review what worked and improve controls/training", "delta_score": 10 },
+        { "label": "B", "text": "Discuss informally only", "delta_score": -5 },
+        { "label": "C", "text": "Move on without review", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-post-003",
+      "phase": "Post-Incident",
+      "prompt": "Employees know something happened. What is best?",
+      "options": [
+        { "label": "A", "text": "Share guidance to prevent similar phishing attacks", "delta_score": 10 },
+        { "label": "B", "text": "Tell only managers", "delta_score": -5 },
+        { "label": "C", "text": "Say nothing to avoid attention", "delta_score": -10 }
+      ],
+      "is_active": true
+    },
+    {
+      "external_id": "phish-easy-s1-post-004",
+      "phase": "Post-Incident",
+      "prompt": "Weaknesses in the response were found. What now?",
+      "options": [
+        { "label": "A", "text": "Update procedures and security controls formally", "delta_score": 10 },
+        { "label": "B", "text": "Make minor notes only", "delta_score": -5 },
+        { "label": "C", "text": "Leave everything unchanged", "delta_score": -10 }
+      ],
+      "is_active": true
+    }
+  ]
+}
