@@ -426,3 +426,73 @@ def start_hybrid_ai_session(user, difficulty: str, topic: str, questions_per_sta
         "status": session.status,
         "scenario": ai_scenario,
     }
+
+def generate_ai_training_feedback(session):
+    wrong_answers = Answer.objects.filter(
+        session=session,
+        is_correct=False
+    ).select_related("question_run")
+
+    if not wrong_answers.exists():
+        return "Great job. No incorrect answers were recorded."
+
+    summary_data = []
+
+    for ans in wrong_answers:
+        q = ans.question_run
+        correct = None
+
+        for opt in q.choices:
+            if opt.get("delta_score", 0) > 0:
+                correct = opt.get("text")
+
+        summary_data.append({
+            "question": q.prompt,
+            "wrong_answer": ans.selected_text,
+            "correct_answer": correct
+        })
+
+    prompt = f"""
+You are a cybersecurity training instructor.
+
+Generate learning feedback for a player who answered questions incorrectly.
+
+Explain briefly:
+- why their answer was wrong
+- what the correct response is
+- what best practice should be
+
+Return bullet points.
+
+Incorrect answers:
+{json.dumps(summary_data, indent=2)}
+"""
+
+    try:
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "llama3:latest",
+                "prompt": prompt,
+                "stream": False
+            },
+            timeout=60
+        )
+
+        response.raise_for_status()
+        data = response.json()
+
+        return data.get("response", "")
+
+    except Exception as e:
+        print("AI feedback fallback:", e)
+
+        feedback = []
+        for item in summary_data:
+            feedback.append(
+                f"- Question: {item['question']}\n"
+                f"  Your answer: {item['wrong_answer']}\n"
+                f"  Correct answer: {item['correct_answer']}\n"
+            )
+
+        return "\n".join(feedback)

@@ -16,6 +16,7 @@ from .services_new import (
     start_hybrid_ai_session,
     generate_ai_inject,
     generate_ai_crisis_event,
+    generate_ai_training_feedback,
 )
 
 
@@ -63,6 +64,9 @@ def current_state(request, session_id):
         return Response({
             "session": GameSessionSerializer(session).data,
             "next": None,
+            "pressure_level": session.pressure_level,
+            "severity": _get_severity(session.pressure_level),
+            "training_feedback": session.advice_summary,
         })
 
     stage_run = session.stages.filter(status="active").order_by("order").first()
@@ -71,6 +75,9 @@ def current_state(request, session_id):
         return Response({
             "session": GameSessionSerializer(session).data,
             "next": None,
+            "pressure_level": session.pressure_level,
+            "severity": _get_severity(session.pressure_level),
+            "training_feedback": session.advice_summary,
         })
 
     qrun = stage_run.questions.filter(status="pending").order_by("order").first()
@@ -79,18 +86,14 @@ def current_state(request, session_id):
         return Response({
             "session": GameSessionSerializer(session).data,
             "next": None,
+            "pressure_level": session.pressure_level,
+            "severity": _get_severity(session.pressure_level),
+            "training_feedback": session.advice_summary,
         })
 
     base_time = qrun.time_limit_seconds or 30
     adjusted_time = max(8, base_time - (session.pressure_level // 20))
-
-    severity = "low"
-    if session.pressure_level >= 80:
-        severity = "critical"
-    elif session.pressure_level >= 60:
-        severity = "high"
-    elif session.pressure_level >= 40:
-        severity = "elevated"
+    severity = _get_severity(session.pressure_level)
 
     return Response({
         "session": GameSessionSerializer(session).data,
@@ -105,6 +108,7 @@ def current_state(request, session_id):
         },
         "pressure_level": session.pressure_level,
         "severity": severity,
+        "training_feedback": session.advice_summary,
     })
 
 
@@ -147,7 +151,7 @@ def submit_answer(request, session_id):
 
     with transaction.atomic():
         session = GameSession.objects.select_for_update().get(id=session.id)
-        qrun = QuestionRun.objects.select_for_update().get(id=qrun.id)
+        qrun = QuestionRun.objects.select_for_update().select_related("stage_run").get(id=qrun.id)
         stage_run = qrun.stage_run
 
         qrun.status = "answered"
@@ -168,6 +172,7 @@ def submit_answer(request, session_id):
         if not is_correct:
             session.wrong_count += 1
 
+        # Pressure logic
         if score_delta > 0:
             session.pressure_level = max(0, session.pressure_level - 5)
         elif score_delta == -5:
@@ -176,23 +181,19 @@ def submit_answer(request, session_id):
             session.pressure_level += 20
 
         session.pressure_level = min(session.pressure_level, 100)
+        severity = _get_severity(session.pressure_level)
 
-        severity = "low"
-        if session.pressure_level >= 80:
-            severity = "critical"
-        elif session.pressure_level >= 60:
-            severity = "high"
-        elif session.pressure_level >= 40:
-            severity = "elevated"
-
+        # AI inject
         inject_message = None
         if random.random() < 0.4:
             inject_message = generate_ai_inject(session.topic, severity)
 
+        # AI crisis event
         crisis_event = None
         if severity in ["high", "critical"] and random.random() < 0.3:
             crisis_event = generate_ai_crisis_event(session.topic, severity)
 
+        # Fail conditions
         if session.pressure_level >= 100:
             session.status = "failed"
             session.ended_reason = "system_escalation"
@@ -202,6 +203,7 @@ def submit_answer(request, session_id):
             session.ended_reason = "too_many_wrongs"
             session.ended_at = timezone.now()
 
+        # Stage progression
         if session.status != "failed":
             if not stage_run.questions.filter(status="pending").exists():
                 stage_run.status = "done"
@@ -217,6 +219,10 @@ def submit_answer(request, session_id):
                     session.ended_reason = "finished"
                     session.ended_at = timezone.now()
 
+        # Generate AI training feedback only when session ends
+        if session.status in ["completed", "failed"]:
+            session.advice_summary = generate_ai_training_feedback(session)
+
         stage_run.save(update_fields=["stage_score"])
         session.save()
 
@@ -226,6 +232,7 @@ def submit_answer(request, session_id):
         "severity": severity,
         "ai_inject": inject_message,
         "crisis_event": crisis_event,
+        "training_feedback": session.advice_summary,
     })
 
 
@@ -248,6 +255,20 @@ def quit_session(request, session_id):
         session.status = "abandoned"
         session.ended_reason = "user_quit"
         session.ended_at = timezone.now()
-        session.save(update_fields=["status", "ended_reason", "ended_at"])
+        session.advice_summary = generate_ai_training_feedback(session)
+        session.save(update_fields=["status", "ended_reason", "ended_at", "advice_summary"])
 
-    return Response({"session": GameSessionSerializer(session).data})
+    return Response({
+        "session": GameSessionSerializer(session).data,
+        "training_feedback": session.advice_summary,
+    })
+
+
+def _get_severity(pressure_level: int) -> str:
+    if pressure_level >= 80:
+        return "critical"
+    if pressure_level >= 60:
+        return "high"
+    if pressure_level >= 40:
+        return "elevated"
+    return "low"
